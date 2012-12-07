@@ -116,7 +116,7 @@ def _metadata_backwards_shim(metadata):
             for field in ('name', 'title', 'term'):
                 if field in chamber:
                     metadata[chamber_type + '_chamber_' + field] = \
-                            chamber[field]
+                        chamber[field]
     return metadata
 
 
@@ -165,7 +165,7 @@ class BillHandler(BillyHandler):
         # if subfields are specified
         if not fields or 'votes' in fields or vote_fields:
             bill['votes'] = list(db.votes.find({'bill_id': bill['_id']},
-                                          fields=vote_fields))
+                                               fields=vote_fields))
         return bill
 
 
@@ -455,8 +455,8 @@ class BoundaryHandler(BillyHandler):
         url = "%sboundaries/%s/simple_shape" % (self.base_url, boundary_id)
         try:
             data = json.load(urllib2.urlopen(url))
-        except urllib2.HTTPError, e:
-            if 400 <= e.code < 500:
+        except urllib2.HTTPError as e:
+            if e.code >= 400:
                 resp = rc.NOT_FOUND
                 return resp
             else:
@@ -477,8 +477,8 @@ class BoundaryHandler(BillyHandler):
         lon_delta = abs(max_lon - min_lon)
         lat_delta = abs(max_lat - min_lat)
 
-        region = {'center_lon': (max_lon - min_lon) / 2,
-                  'center_lat': (max_lat - min_lat) / 2,
+        region = {'center_lon': (max_lon + min_lon) / 2,
+                  'center_lat': (max_lat + min_lat) / 2,
                   'lon_delta': lon_delta, 'lat_delta': lat_delta,
                  }
         bbox = [[min_lat, min_lon], [max_lat, max_lon]]

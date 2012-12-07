@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import glob
 import json
@@ -132,14 +133,14 @@ def git_add_bill(data):
     git_active_repo.object_store.add_object(spam)
     git_active_tree[bid] = (0100644, spam.id)
     git_active_tree.check()
-    print "added %s - %s" % (data['_id'], spam.id)
+    print("added %s - %s" % (data['_id'], spam.id))
 
 
 def git_commit(message):
     if not hasattr(settings, "ENABLE_GIT") or not settings.ENABLE_GIT:
         return
 
-    print "Commiting import as '%s'" % (message)
+    print("Commiting import as '%s'" % message)
 
     global git_active_repo
     global git_active_tree
@@ -150,7 +151,7 @@ def git_commit(message):
 
     if git_old_tree == git_active_tree.id:
         # We don't wait t commit twice.
-        print "Nothing new here. Bailing out."
+        print("Nothing new here. Bailing out.")
         return
 
     c = git_active_commit
@@ -230,8 +231,7 @@ def track_version(bill, version):
            'chamber': bill['chamber'],
            'bill_id': bill['bill_id'],
            'subjects': bill.get('subjects', []),
-           'sponsors': [s['leg_id'] for s in bill['sponsors'] if s['leg_id']]
-          }
+           'sponsors': [s['leg_id'] for s in bill['sponsors'] if s['leg_id']]}
     # insert or update this document
     db.tracked_versions.update({'_id': version['doc_id']}, {'$set': doc},
                                upsert=True)
@@ -378,10 +378,10 @@ def import_bill(data, standalone_votes, categorizer):
 
         # passed & signed dates
         if (not dates['passed_upper'] and action['actor'] == 'upper'
-            and 'bill:passed' in action['type']):
+                and 'bill:passed' in action['type']):
             dates['passed_upper'] = adate
         elif (not dates['passed_lower'] and action['actor'] == 'lower'
-            and 'bill:passed' in action['type']):
+                and 'bill:passed' in action['type']):
             dates['passed_lower'] = adate
         elif (not dates['signed'] and 'governor:signed' in action['type']):
             dates['signed'] = adate
@@ -397,7 +397,7 @@ def import_bill(data, standalone_votes, categorizer):
 
                 delta = abs(vote['date'] - action['date'])
                 if (delta < datetime.timedelta(hours=20) and
-                    vote['chamber'] == action['actor']):
+                        vote['chamber'] == action['actor']):
                     if action_attached:
                         # multiple votes match, we can't guess
                         action.pop('related_votes', None)

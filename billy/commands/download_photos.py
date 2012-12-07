@@ -22,7 +22,7 @@ def _upload(fname, bucket):
     headers = {'Cache-Control': 'max-age=2592000'}
 
     # optimize JPEG
-    subprocess.check_call(['jpegoptim',  '--strip-all', fname])
+    subprocess.check_call(['jpegoptim', '--strip-all', fname])
 
     k = Key(bucket)
     k.key = fname
@@ -98,4 +98,4 @@ class DownloadPhotos(BaseCommand):
                                            '150x200', fname])
                     _upload(fname, bucket)
                 except subprocess.CalledProcessError:
-                    print 'convert failed for ', fname
+                    print('convert failed for ', fname)

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys
 import urllib2
 import importlib
@@ -23,11 +24,11 @@ class TextExtract(BaseCommand):
         extract_text = module.extract_text
 
         if (args.filename.startswith('http://') or
-            args.filename.startswith('https://') or
-            args.filename.startswith('ftp://')):
+                args.filename.startswith('https://') or
+                args.filename.startswith('ftp://')):
             filedata = urllib2.urlopen(args.filename).read()
         else:
             filedata = open(args.filename).read()
 
         doc = {}
-        print extract_text(doc, filedata)
+        print(extract_text(doc, filedata))
